@@ -19,3 +19,15 @@ model User {
   role      String     @default("student")
   createdAt DateTime   @default(now())
 }
+
+model Plat {
+    id          Int         @id @default(autoincrement())
+  name         String
+  description String
+  price        Float
+  category  String
+  allergenes  String
+  availability  Boolean        @default(true)
+  image       String?
+  createdAt   DateTime       @default(now())
+}
