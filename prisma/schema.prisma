@@ -18,6 +18,7 @@ model User {
   name       String
   role      String     @default("student")
   createdAt DateTime   @default(now())
+  commandes Commande[]
 }
 
 model Plat {
@@ -30,4 +31,17 @@ model Plat {
   availability  Boolean        @default(true)
   image       String?
   createdAt   DateTime       @default(now())
+  commandes Commande[]
+}
+
+model Commande {
+  id             String         @id @default(uuid())
+  user           User           @relation(fields: [userId], references: [id])
+  userId         String
+  total          Float
+  statut         String         @default("en_attente")
+  pointLivraison String
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  plat Plat[]
 }

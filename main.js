@@ -74,6 +74,28 @@ app.delete('/plats/:id', async (req,res)=>{
     })
     res.send(`${plats.name} bien supprimé`)
 })
+
+// Rout pour Commande 
+app.get('/commande', async (req,res) =>{
+    const commande = await prisma.commande.findMany();
+    res.json(commande);
+})
+app.post('/commande', async (req,res)=>{
+    const { userId, total, allergenes,pointLivraison} = req.body;
+    const commande = await prisma.commande.create({
+        data : { userId, total, allergenes,pointLivraison},
+        include : true,
+    })
+    res.send(`${commande.name} bien posté`)
+})
+app.delete('/commande/:id', async (req,res)=>{
+    const id = parseInt(req.params.id);
+    const commande = await prisma.commande.delete({
+        where : {id}
+    })
+    res.send(`${commande.name} bien supprimé`)
+})
+
 app.listen(PORT, () => {
   console.log(`Server is listening on port ${PORT}`);
 });
