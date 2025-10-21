@@ -413,6 +413,11 @@ app.delete('/commande/:id', async (req, res) => {
     res.send(`Commande ${id} bien supprimée`);
 });
 
-app.listen(PORT, () => {
-  console.log(`Server is listening on port ${PORT}`);
-});
+
+
+// exportation de l'app pour le test 
+module.exports = app;
+if (require.main === module) {
+  const PORT = process.env.PORT || 3000;
+  app.listen(PORT, () => console.log(`Server is listening on port ${PORT}`));
+}
