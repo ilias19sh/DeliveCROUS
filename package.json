@@ -1,14 +1,16 @@
 {
   "name": "delivecrous",
   "version": "1.0.0",
-  "description": "bla bla",
-  "main": "index.js",
+  "description": "Application de livraison de repas pour étudiants",
+  "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon main.js"
+    "start": "node main.js",
+    "dev": "nodemon main.js",
+    "test": "cross-env NODE_ENV=test jest --runInBand --detectOpenHandles",
+    "test:watch": "cross-env NODE_ENV=test jest --watch"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["delivery", "food", "students", "crous"],
+  "author": "Équipe DeliveCROUS",
   "license": "ISC",
   "devDependencies": {
     "cross-env": "^10.1.0",
@@ -23,11 +25,6 @@
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2"
-  },
-  "scripts": {
-    "start": "node main.js",
-    "test": "cross-env NODE_ENV=test jest --runInBand --detectOpenHandles",
-    "test:watch": "cross-env NODE_ENV=test jest --watch"
   },
   "jest": {
     "testEnvironment": "node",

@@ -11,6 +11,7 @@ const PORT = 3000
 const JWT_SECRET = process.env.JWT_SECRET || 'cle_secrete_anas_koman_ilias_delivecrous_2024';
 
 app.use(express.json());
+app.use(express.static('public'));
 
 // Authentification JWT
 function authenticateToken(req, res, next) {
@@ -36,7 +37,7 @@ function authenticateToken(req, res, next) {
 }
 
 app.get('/', (req,res) => {
-    res.send('hello world')
+    res.sendFile(__dirname + '/public/index.html');
 })
 
 //---------------------Routes d'authentification------------------//
@@ -405,12 +406,38 @@ app.put('/commande/:id', async (req, res) => {
 
 
 
-app.delete('/commande/:id', async (req, res) => {
+app.delete('/commande/:id', authenticateToken, async (req, res) => {
   const id = parseInt(req.params.id);
+
+  try {
+   
+    const commande = await prisma.commande.findUnique({
+      where: { id },
+      include: { user: true }
+    });
+
+    if (!commande) {
+      return res.status(404).json({ error: 'Commande non trouvée' });
+    }
+
+    
+    if (commande.userId !== req.user.userId && req.user.role !== 'admin') {
+      return res.status(403).json({ error: 'Accès refusé' });
+    }
+
     await prisma.commande.delete({
       where: { id }
     });
-    res.send(`Commande ${id} bien supprimée`);
+
+    res.json({ 
+      message: `Commande ${id} supprimée avec succès`,
+      success: true 
+    });
+
+  } catch (error) {
+    console.error('Erreur lors de la suppression:', error);
+    res.status(500).json({ error: 'Erreur serveur lors de la suppression' });
+  }
 });
 
 
